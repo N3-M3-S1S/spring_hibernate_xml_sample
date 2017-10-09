@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+">
+
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <!--Set SQLite driver and database name. The database will be created in the app's classpath.-->
+		<property name="driverClassName" value="org.sqlite.JDBC"></property>
+		<property name="url" value="jdbc:sqlite:db.sqlite"></property>
+	</bean>
+        
+        
+        <bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		
+                <property name="hibernateProperties">
+			<props>
+                            <!-- Set SQLite dialect -->
+				<prop key="hibernate.dialect">com.nemesis.spring_hibernate_xml_sample.utils.hibernate.SQLiteDialect</prop>
+                            <!-- Re-create the database when the app starts -->
+                                <prop key="hibernate.hbm2ddl.auto">create-drop</prop>
+                            <!-- Make getCurrentSession method create a session per thread  -->
+                                <prop key="hibernate.current_session_context_class">thread</prop >      
+			</props>
+		</property>
+                
+                <property name="mappingResources">
+                    <list>
+                        <value>mappings/driver.hbm.xml</value>
+                        <value>mappings/car.hbm.xml</value>
+                        <value>mappings/order.hbm.xml</value>
+
+                    </list>
+                 </property>            
+	</bean>
+
+	
+	<bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+	<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+        
+        <!--Map abstract bean for dao-->
+        <bean id="baseDao" class="com.nemesis.spring_hibernate_xml_sample.model.dao.impl.BaseDao" abstract="true">
+            <!--Inject session factory in constructor-->
+            <constructor-arg ref="sessionFactory"/>
+        </bean>
+        
+        <bean id="driverDao" parent="baseDao" class="com.nemesis.spring_hibernate_xml_sample.model.dao.impl.DriverDao_impl"/>
+
+        <bean id="carDao" parent="baseDao" class="com.nemesis.spring_hibernate_xml_sample.model.dao.impl.CarDao_impl"/>
+        
+        <bean id="orderDao" parent="baseDao" class="com.nemesis.spring_hibernate_xml_sample.model.dao.impl.OrderDao_impl"/>
+        
+        <bean id="driverNameValidator" class="com.nemesis.spring_hibernate_xml_sample.model.service.logic.driver_service.impl.DriverNameValidator_impl"/>
+        
+        <bean id="licenseNumberValidator" class="com.nemesis.spring_hibernate_xml_sample.model.service.logic.driver_service.impl.LicenseNumberValidator_impl"/>
+        
+        <bean id="carNumberValidator" class="com.nemesis.spring_hibernate_xml_sample.model.service.logic.car_service.impl.CarNumberValidator_impl"/>
+        
+        <bean id="addressValidator" class="com.nemesis.spring_hibernate_xml_sample.model.service.logic.order_service.impl.AddressValidator_impl"/>
+        
+        <bean id="consoleErrorReporter" class="com.nemesis.spring_hibernate_xml_sample.model.service.logic.error_reporter.impl.ConsoleErrorReporter"/>
+        
+        <bean id="driverService" class="com.nemesis.spring_hibernate_xml_sample.model.service.impl.DriverService_impl">
+            <constructor-arg ref="driverDao"/>
+            <constructor-arg ref="driverNameValidator"/>
+            <constructor-arg ref="licenseNumberValidator"/>
+            <constructor-arg ref="consoleErrorReporter"/>
+        </bean>
+        
+        <bean id="carService" class="com.nemesis.spring_hibernate_xml_sample.model.service.impl.CarService_impl">
+            <constructor-arg ref="carDao"/>
+            <constructor-arg ref="carNumberValidator"/>
+            <constructor-arg ref="consoleErrorReporter"/>
+        </bean>
+        
+        <bean id="orderService" class="com.nemesis.spring_hibernate_xml_sample.model.service.impl.OrderService_impl">
+            <constructor-arg ref="orderDao"/>
+            <constructor-arg ref="addressValidator"/>
+            <constructor-arg ref="consoleErrorReporter"/>
+        </bean>
+              
+</beans>

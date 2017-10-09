@@ -1,0 +1,28 @@
+<hibernate-mapping>
+
+    <class name="com.nemesis.spring_hibernate_xml_sample.model.entity.Driver" table="drivers">
+    
+        <id name="licenseNumber" column="license_number"/>
+        
+        <property name="name"  not-null="true"/>
+       
+        <many-to-one name="car" 
+        column="car_number" 
+        cascade="all"    
+        lazy="false"    
+        />
+        
+        <set name="orders" 
+             cascade="all"
+             lazy="false" 
+             fetch="select" 
+             >
+            <key>
+                <column name="driver_license_number" not-null="true" />
+            </key>
+            <one-to-many class="com.nemesis.spring_hibernate_xml_sample.model.entity.Order" />
+        </set>
+              
+    </class>
+    
+</hibernate-mapping>

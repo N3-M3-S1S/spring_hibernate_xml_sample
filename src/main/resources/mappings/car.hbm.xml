@@ -7,9 +7,9 @@
         <property name="carModel" column="model" not-null="true"/>
        
         <one-to-one name="driver" 
-        cascade="save-update"
-        lazy="false"
-        property-ref="car"/>
+                    cascade="save-update"
+                    lazy="false"
+                    property-ref="car"/>
             
     </class>
     

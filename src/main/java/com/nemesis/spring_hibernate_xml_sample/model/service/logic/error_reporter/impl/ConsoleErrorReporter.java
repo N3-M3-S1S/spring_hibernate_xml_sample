@@ -2,7 +2,7 @@ package com.nemesis.spring_hibernate_xml_sample.model.service.logic.error_report
 
 import com.nemesis.spring_hibernate_xml_sample.model.service.logic.error_reporter.ErrorReporter;
 
-public class ConsoleErrorReporter implements ErrorReporter{
+public class ConsoleErrorReporter implements ErrorReporter {
 
     @Override
     public void reportError(String errorMessage) {

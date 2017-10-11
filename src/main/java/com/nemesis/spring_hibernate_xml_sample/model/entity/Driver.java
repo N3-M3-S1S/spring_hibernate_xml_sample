@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+public class Driver implements Serializable {
 
-public class Driver implements Serializable{
     private String licenseNumber;
     private String name;
     private Car car;
@@ -15,8 +15,9 @@ public class Driver implements Serializable{
         this.name = driverName;
         this.licenseNumber = driverLicenseNumber;
     }
-    
-    public Driver(){}
+
+    public Driver() {
+    }
 
     public String getLicenseNumber() {
         return licenseNumber;
@@ -25,7 +26,6 @@ public class Driver implements Serializable{
     public void setLicenseNumber(String licenseNumber) {
         this.licenseNumber = licenseNumber;
     }
-   
 
     public String getName() {
         return name;
@@ -55,5 +55,5 @@ public class Driver implements Serializable{
     public String toString() {
         return "Driver{" + "driverLicenseNumber=" + licenseNumber + ", driverName=" + name + '}';
     }
-        
+
 }

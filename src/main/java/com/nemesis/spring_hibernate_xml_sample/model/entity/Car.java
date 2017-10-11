@@ -2,7 +2,8 @@ package com.nemesis.spring_hibernate_xml_sample.model.entity;
 
 import java.io.Serializable;
 
-public class Car implements Serializable{
+public class Car implements Serializable {
+
     private String carModel;
     private String carNumber;
     private Driver driver;
@@ -11,9 +12,9 @@ public class Car implements Serializable{
         this.carModel = carModel;
         this.carNumber = carNumber;
     }
-    
-    public Car(){}
 
+    public Car() {
+    }
 
     public String getCarModel() {
         return carModel;
@@ -31,7 +32,6 @@ public class Car implements Serializable{
         this.carNumber = carNumber;
     }
 
-
     public Driver getDriver() {
         return driver;
     }
@@ -44,5 +44,5 @@ public class Car implements Serializable{
     public String toString() {
         return "Car{" + "carModel=" + carModel + ", carNumber=" + carNumber + '}';
     }
-   
+
 }

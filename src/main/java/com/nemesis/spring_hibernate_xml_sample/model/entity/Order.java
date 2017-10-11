@@ -2,7 +2,8 @@ package com.nemesis.spring_hibernate_xml_sample.model.entity;
 
 import java.io.Serializable;
 
-public class Order implements Serializable{
+public class Order implements Serializable {
+
     private int orderID;
     private Driver driver;
     private String addressFrom;
@@ -12,8 +13,9 @@ public class Order implements Serializable{
         this.addressFrom = addressFrom;
         this.addressTo = addressTo;
     }
-    
-    public Order(){}
+
+    public Order() {
+    }
 
     public int getOrderID() {
         return orderID;
@@ -51,5 +53,5 @@ public class Order implements Serializable{
     public String toString() {
         return "Order{" + "orderID=" + orderID + ", addressFrom=" + addressFrom + ", addressTo=" + addressTo + '}';
     }
-      
+
 }

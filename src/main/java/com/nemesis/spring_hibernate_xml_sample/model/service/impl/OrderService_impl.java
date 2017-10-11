@@ -9,7 +9,8 @@ import com.nemesis.spring_hibernate_xml_sample.model.service.ErrorReportingServi
 import com.nemesis.spring_hibernate_xml_sample.model.service.OrderService;
 import java.util.List;
 
-public class OrderService_impl extends ErrorReportingService implements OrderService{
+public class OrderService_impl extends ErrorReportingService implements OrderService {
+
     private OrderDao orderDao;
     private AddressValidator addressValidator;
 
@@ -18,24 +19,22 @@ public class OrderService_impl extends ErrorReportingService implements OrderSer
         this.orderDao = orderDao;
         this.addressValidator = addressValidator;
     }
-    
+
     @Override
     public Order createOrder(String addressFrom, String addressTo) {
-        if(addressValidator.isAddressValid(addressFrom)){
-            if(addressValidator.isAddressValid(addressTo)){
+        if (addressValidator.isAddressValid(addressFrom)) {
+            if (addressValidator.isAddressValid(addressTo)) {
                 Order order = new Order(addressFrom, addressTo);
                 orderDao.save(order);
                 return order;
-            }
-            else{
+            } else {
                 reportInvalidAddress(addressTo);
             }
-        }
-        else{
+        } else {
             reportInvalidAddress(addressFrom);
         }
         return null;
-        
+
     }
 
     @Override
@@ -45,13 +44,13 @@ public class OrderService_impl extends ErrorReportingService implements OrderSer
 
     @Override
     public List<Order> getAllOrdersByFromAddress(String addressFrom) {
-            return orderDao.getOrdesrByFromAdsress(addressFrom);
- 
+        return orderDao.getOrdesrByFromAdsress(addressFrom);
+
     }
 
     @Override
     public List<Order> getAllOrdersByToAddress(String addressTo) {
-            return orderDao.getOrdersByToAddress(addressTo);
+        return orderDao.getOrdersByToAddress(addressTo);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class OrderService_impl extends ErrorReportingService implements OrderSer
         return orderDao.getAll();
     }
 
-    private void reportInvalidAddress(String address){
+    private void reportInvalidAddress(String address) {
         errorReporter.reportError(String.format("Invalid address %s. Address must be in format STREET_NAME/STREET_NUMBER", address));
     }
 

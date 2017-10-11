@@ -3,14 +3,14 @@
     <class name="com.nemesis.spring_hibernate_xml_sample.model.entity.Order" table="orders">
         
         <id name="orderID" column="order_id" type="int">
-                <generator class="native"/>    
+            <generator class="native"/>    
         </id>
         
         <many-to-one name="driver" 
-        class="com.nemesis.spring_hibernate_xml_sample.model.entity.Driver"
-        lazy="false"
-        cascade="save-update"
-        column="driver_license_number"
+                     class="com.nemesis.spring_hibernate_xml_sample.model.entity.Driver"
+                     lazy="false"
+                     cascade="save-update"
+                     column="driver_license_number"
         />
         
         <property name="addressFrom" column="address_from" not-null="true"/>

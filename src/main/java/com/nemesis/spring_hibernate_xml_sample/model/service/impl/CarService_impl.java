@@ -9,42 +9,41 @@ import com.nemesis.spring_hibernate_xml_sample.model.service.logic.error_reporte
 import com.nemesis.spring_hibernate_xml_sample.model.service.CarService;
 import java.util.List;
 
-public class CarService_impl extends ErrorReportingService implements CarService{
+public class CarService_impl extends ErrorReportingService implements CarService {
+
     private CarDao carDao;
-    private CarNumberValidator carNumberValidator;    
+    private CarNumberValidator carNumberValidator;
 
     public CarService_impl(CarDao carDao, CarNumberValidator carNumberValidator, ErrorReporter errorReporter) {
         super(errorReporter);
         this.carDao = carDao;
         this.carNumberValidator = carNumberValidator;
     }
-    
+
     @Override
     public Car createCar(String carModel, String carNumber) {
-        if(carNumberValidator.isCarNumberValid(carNumber)){
-            if(getCarByNumber(carNumber) == null){
+        if (carNumberValidator.isCarNumberValid(carNumber)) {
+            if (getCarByNumber(carNumber) == null) {
                 Car c = new Car(carModel, carNumber.toUpperCase());
                 carDao.save(c);
                 return c;
-            }
-            else{
+            } else {
                 reportCarWithNumberExists(carNumber);
             }
-        }
-        else{
+        } else {
             reportInvalidCarNumberError(carNumber);
         }
         return null;
-         
+
     }
-    
+
     @Override
     public void setCarToDriver(Car car, Driver driver) {
         car.setDriver(driver);
         driver.setCar(car);
         carDao.update(car);
     }
-    
+
     @Override
     public void deleteCar(Car car) {
         carDao.delete(car);
@@ -52,10 +51,9 @@ public class CarService_impl extends ErrorReportingService implements CarService
 
     @Override
     public Car getCarByNumber(String carNumber) {
-        if(carNumberValidator.isCarNumberValid(carNumber)){
+        if (carNumberValidator.isCarNumberValid(carNumber)) {
             return carDao.getCarByNumber(carNumber);
-        }
-        else{
+        } else {
             reportInvalidCarNumberError(carNumber);
             return null;
         }
@@ -70,12 +68,12 @@ public class CarService_impl extends ErrorReportingService implements CarService
     public List<Car> getAllCars() {
         return carDao.getAll();
     }
-    
-    private void reportInvalidCarNumberError(String carNumber){
+
+    private void reportInvalidCarNumberError(String carNumber) {
         errorReporter.reportError(String.format("Car number (%s) is not valid. Car number must contain 6 digits and 3 letters", carNumber));
     }
-    
-    private void reportCarWithNumberExists(String carNumber){
+
+    private void reportCarWithNumberExists(String carNumber) {
         errorReporter.reportError(String.format("Car with number (%s) already exists", carNumber));
     }
 

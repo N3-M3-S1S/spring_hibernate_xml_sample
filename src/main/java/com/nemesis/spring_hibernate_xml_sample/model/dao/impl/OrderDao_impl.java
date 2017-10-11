@@ -11,9 +11,8 @@ import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
 
+public class OrderDao_impl extends BaseDao<Order> implements OrderDao {
 
-public class OrderDao_impl extends BaseDao<Order> implements OrderDao{
-    
     public OrderDao_impl(SessionFactory factory) {
         super(factory, Order.class);
     }
@@ -27,22 +26,19 @@ public class OrderDao_impl extends BaseDao<Order> implements OrderDao{
     public List<Order> getOrdersByToAddress(String addressTo) {
         return getOrdersByAdress(addressTo, "addressTo");
     }
-    
+
     //CriteriaQuery example
-    private List<Order> getOrdersByAdress(String address, String direction){
+    private List<Order> getOrdersByAdress(String address, String direction) {
         GlobalLogger.logDebug("Getting all orders with address " + address + " and direction " + direction);
         beginTransaction();
         CriteriaBuilder cb = getSession().getCriteriaBuilder();
         CriteriaQuery<Order> query = cb.createQuery(Order.class);
         Root<Order> root = query.from(Order.class);
-        Predicate p = cb.like(cb.lower(root.get(direction)), "%"+address+"%".toLowerCase());
+        Predicate p = cb.like(cb.lower(root.get(direction)), "%" + address + "%".toLowerCase());
         query.where(p);
         List<Order> orders = getSession().createQuery(query.select(root)).getResultList();
         commitTransaction();
         return orders;
     }
-
-   
-    
 
 }

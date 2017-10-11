@@ -7,16 +7,16 @@
         <property name="name"  not-null="true"/>
        
         <many-to-one name="car" 
-        column="car_number" 
-        cascade="all"    
-        lazy="false"    
+                     column="car_number" 
+                     cascade="all"    
+                     lazy="false"    
         />
         
         <set name="orders" 
              cascade="all"
              lazy="false" 
              fetch="select" 
-             >
+        >
             <key>
                 <column name="driver_license_number" not-null="true" />
             </key>
